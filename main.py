@@ -14,11 +14,16 @@ def main():
     count_map = Counter()
     # Take pictures at spaced intervals
     # camera = picamera.PiCamera()
-    for i in range(100):
-        filename = 'class_pic_{}.jpg'.format(ctime())
+    for filename in listdir("./uploads"):
+        # filename = "uploads/full.jpg" # 'class_pic_{}.jpg'.format(ctime())
         # camera.capture(filename)
         people_found = give_match(filename)
         update_count(people_found, count_map)
-        sleep(60)
+        sleep(10)
+    print(count_map)
     # Delete all the pictures we took this session
+    print("Deleting uploads")
     delete_files("./uploads")
+
+if __name__ == "__main__":
+    main()

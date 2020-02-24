@@ -26,11 +26,8 @@ def give_match(file_path):
 		known_faces = pickle.load(fp)
 	with open("names.txt", "rb") as fp:
 		known_faces_names = pickle.load(fp)
-	print("Looking for faces...")
 	unknown_faces = face_recognition.face_encodings(face_recognition.load_image_file(file_path))
-	print("Found {} faces...".format(len(unknown_faces)))
 	people_found = []
-    #print(known_faces_names)
 	for face in unknown_faces:
 		face_distances = list(face_recognition.face_distance(known_faces, face))
 		max_index = face_distances.index(min(face_distances))
@@ -38,10 +35,6 @@ def give_match(file_path):
 		known_faces.pop(max_index)
 		known_faces_names.pop(max_index)
 		people_found.append(max_match_person)
-
-	print("We found the following people:")
-	for name in people_found:
-		print(name)
 	return people_found
 
 def update_count(people_found, count_map):
