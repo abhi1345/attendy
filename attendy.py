@@ -4,13 +4,10 @@ import numpy as np
 import os
 import pickle
 
-
 def learn_faces():
 	known_faces = []
 	known_faces_names = []
-
 	working_dir = os.getcwd() + '/' + 'Faces'
-
 	for file in os.listdir(working_dir):
 	    if file[0] == ".":
 	        continue
@@ -24,29 +21,33 @@ def learn_faces():
 	with open("names.txt", "wb") as fp:
 		pickle.dump(known_faces_names, fp)
 
-
 def give_match(file_path):
 	with open("faces.txt", "rb") as fp:
 		known_faces = pickle.load(fp)
 	with open("names.txt", "rb") as fp:
 		known_faces_names = pickle.load(fp)
-    print("Looking for faces...")
-    unknown_faces = face_recognition.face_encodings(face_recognition.load_image_file(file_path))
-    print("Found {} faces...".format(len(unknown_faces)))
-    people_found = []
+	print("Looking for faces...")
+	unknown_faces = face_recognition.face_encodings(face_recognition.load_image_file(file_path))
+	print("Found {} faces...".format(len(unknown_faces)))
+	people_found = []
     #print(known_faces_names)
-    for face in unknown_faces:
-        face_distances = list(face_recognition.face_distance(known_faces, face))
-        max_index = face_distances.index(min(face_distances))
-        max_match_person = known_faces_names_copy[max_index]
-        known_faces.pop(max_index)
-        known_faces_names.pop(max_index)
-        people_found.append(max_match_person)
-    
-    print("We found the following people:")
-    for name in people_found:
-        print(name)
-    return people_found
+	for face in unknown_faces:
+		face_distances = list(face_recognition.face_distance(known_faces, face))
+		max_index = face_distances.index(min(face_distances))
+		max_match_person = known_faces_names[max_index]
+		known_faces.pop(max_index)
+		known_faces_names.pop(max_index)
+		people_found.append(max_match_person)
+
+	print("We found the following people:")
+	for name in people_found:
+		print(name)
+	return people_found
+
+def update_count(people_found, count_map):
+	for name in people_found:
+		clean_name = ''.join([i for i in name.replace("_", " ") if not i.isdigit()])
+		count_map[clean_name] += 1
 
 def delete_files(folder):
 	import os, shutil
