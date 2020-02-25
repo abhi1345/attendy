@@ -3,15 +3,15 @@ from PIL import Image
 import numpy as np
 import os
 import pickle
+import smtplib
+from datetime import date
 
 def learn_faces():
 	known_faces = []
 	known_faces_names = []
 	working_dir = os.getcwd() + '/' + 'Faces'
 	for file in os.listdir(working_dir):
-	    if file[0] == ".":
-	        continue
-	    else:
+	    if file[0] != ".":
 	        print(file)
 	        known_faces.append((face_recognition.face_encodings(face_recognition.load_image_file(working_dir + '/' + file))[0]))
 	        known_faces_names.append(file.rsplit('.', 1)[0])
@@ -26,11 +26,8 @@ def give_match(file_path):
 		known_faces = pickle.load(fp)
 	with open("names.txt", "rb") as fp:
 		known_faces_names = pickle.load(fp)
-	print("Looking for faces...")
 	unknown_faces = face_recognition.face_encodings(face_recognition.load_image_file(file_path))
-	print("Found {} faces...".format(len(unknown_faces)))
 	people_found = []
-    #print(known_faces_names)
 	for face in unknown_faces:
 		face_distances = list(face_recognition.face_distance(known_faces, face))
 		max_index = face_distances.index(min(face_distances))
@@ -38,16 +35,58 @@ def give_match(file_path):
 		known_faces.pop(max_index)
 		known_faces_names.pop(max_index)
 		people_found.append(max_match_person)
-
-	print("We found the following people:")
-	for name in people_found:
-		print(name)
 	return people_found
 
 def update_count(people_found, count_map):
 	for name in people_found:
 		clean_name = ''.join([i for i in name.replace("_", " ") if not i.isdigit()])
 		count_map[clean_name] += 1
+
+def count_to_lists(count_map, roster, num_pics=30):
+	presentlist = []
+	absentlist = []
+	for name in roster:
+		if count_map[name] >= int(num_pics*0.7):
+			presentlist.append(name)
+		else:
+			absentlist.append(name)
+	return presentlist, absentlist
+
+def send_email(presentlist, absentlist):
+	gmail_user = 'berkeley.attendy@gmail.com'
+	gmail_password = 'rclhauaeczuxhiuq'
+
+	def list_to_string(l):
+	    return ', '.join(l)
+
+	sent_from = gmail_user
+	to = ['sh_abhi@ymail.com', 'abhisheks@berkeley.edu']
+	subject = 'Attendance for {}'.format(date.today())
+	body = "Dear Instructors,\n \
+	Attendy has successfully logged today's attendance for INDENG 171\n\n \
+	Absent students: {}\n\n \
+	Present students: {}\n\n \
+	Thank you for using Attendy. Have a great day".format(list_to_string(presentlist), \
+	                                                      list_to_string(absentlist))
+
+	email_text = """\
+	From: %s
+	To: %s
+	Subject: %s
+
+	%s
+	""" % (sent_from, ", ".join(to), subject, body)
+
+	try:
+	    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+	    server.ehlo()
+	    server.login(gmail_user, gmail_password)
+	    server.sendmail(sent_from, to, email_text)
+	    server.close()
+
+	    print('Email sent!')
+	except:
+	    print('Something went wrong...')
 
 def delete_files(folder):
 	import os, shutil
