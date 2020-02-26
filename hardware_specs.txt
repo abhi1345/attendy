@@ -1,9 +1,9 @@
 Hardware Specifications:
 
-Microcomputer: 					Raspberry Pi Zero W
-Case:										Raspberry Pi Official Camera Case (modified to fit larger lens)
-Camera Module:					Raspberry Pi Camera Module v2 8MP Board
-Camera Sensor Upgrade:	IMX219 8MP Sensor (Arducam)
-Camera Lens Upgrade:		175 Degree Fisheye Lens (Arducam)
+Microcomputer:  Raspberry Pi Zero W
+Case: Raspberry Pi Official Camera Case (modified to fit larger lens)
+Camera Module:  Raspberry Pi Camera Module v2 8MP Board
+Camera Sensor Upgrade:  MX219 8MP Sensor (Arducam)
+Camera Lens Upgrade:  175 Degree Fisheye Lens (Arducam)
 
 Connected Computer: Macbook Pro
