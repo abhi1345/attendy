@@ -3,6 +3,9 @@ from time import sleep, ctime
 import subprocess
 
 # Run this function on startup everytime
+
+bluetooth_address = REDACTED
+
 def main():
     # If running for first time, learn the faces of students
     num_pics = 5
@@ -12,7 +15,7 @@ def main():
     for i in range(num_pics):
         filename = "uploads/{}.jpg".format(ctime())
         camera.capture("./{}".format(filename))
-        subprocess.run(["bluetooth-sendto", "--device=60:F8:1D:C2:CA:31", filename])
+        subprocess.run(["bluetooth-sendto", "--device={}".format(bluetooth_address), filename])
         print("sent a file to macbook")
 
 if __name__ == "__main__":
