@@ -20,3 +20,5 @@ Hardware Specifications:
 * *attendy.py:* Main code for facial recognition, email-sending, and other helper functions. This code is used by other files which are run on the Raspberry Pi and Macbook.
 * *raspberry.py:* The script run on the Raspberry Pi. Takes pictures and sends them to the macbook using bluetooth connection (to circumvent Wi-Fi issues in Donner).
 * *macbook.py:* The script run on the Macbook. Uses macbook's increased computing power to run facial recognition and email attendance report to the instructors.
+* *faces.txt:*  Encoded information regarding student face images.
+* *names.txt:* The class roster.
