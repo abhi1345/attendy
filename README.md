@@ -11,4 +11,7 @@ Hardware Specifications:
 * Camera Sensor Upgrade:  MX219 8MP Sensor (Arducam)
 * Camera Lens Upgrade:  175 Degree Fisheye Lens (Arducam)
 * Connected Computer: Macbook Pro
+## How it works
 
+1. The raspberry pi runs the raspberry.py script, which makes it take and send pictures to the macbook via bluetooth.
+2. The macbook simultaneously runs macbook.py, which makes it check for new files every minute and run facial recognition to generate and email the attendance report.
