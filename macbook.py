@@ -38,7 +38,7 @@ def main():
     send_email(presentlist, absentlist)
     # Delete all the pictures we took this session
     print("Deleting uploads")
-    # delete_files("./uploads")
+    delete_files("./uploads")
 
 if __name__ == "__main__":
     main()
