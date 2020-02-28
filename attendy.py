@@ -54,7 +54,7 @@ def count_to_lists(count_map, roster, num_pics=30):
 
 def send_email(presentlist, absentlist):
 	gmail_user = 'berkeley.attendy@gmail.com'
-	gmail_password = 'rclhauaeczuxhiuq'
+	gmail_password = 'REDACTED'
 
 	def list_to_string(l):
 	    return ', '.join(l)
